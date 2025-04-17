@@ -12,13 +12,13 @@ channels:\n\
     - defaults'
 
 RUN \
-  conda create -y -p /env/ \
-    'blast' \
-    'openjdk >=8'
+    conda create -y -p /env/ \
+        'blast' \
+        'openjdk >=8'
 
 RUN \
-  mkdir -p /opt/cider/ && \
-  wget -O /opt/cider/cider.jar 'https://github.com/hartwigmedical/hmftools/releases/download/cider-v1.0.3/cider_v1.0.3.jar'
+    mkdir -p /opt/cider/ && \
+    wget -O /opt/cider/cider.jar 'https://github.com/hartwigmedical/hmftools/releases/download/cider-v1.0.3/cider_v1.0.3.jar'
 
 RUN \
     conda clean -yaf

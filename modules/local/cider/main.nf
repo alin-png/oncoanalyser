@@ -7,7 +7,7 @@ process CIDER {
     input:
     tuple val(meta), path(bam), path(bai)
     val genome_ver
-    val human_blastdb
+    file human_blastdb
 
     output:
     tuple val(meta), path('cider/*'), emit: cider_dir
@@ -43,6 +43,12 @@ process CIDER {
     stub:
     """
     mkdir -p cider/
+
+    touch cider/${meta.sample_id}.cider.bam
+    touch cider/${meta.sample_id}.cider.blastn_match.tsv.gz
+    touch cider/${meta.sample_id}.cider.layout.gz
+    touch cider/${meta.sample_id}.cider.locus_stats.tsv
+    touch cider/${meta.sample_id}.cider.vdj.tsv.gz
 
     echo -e '${task.process}:\\n  stub: noversions\\n' > versions.yml
     """
