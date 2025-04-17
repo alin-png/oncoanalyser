@@ -2,7 +2,7 @@ process TEAL {
     tag "${meta.id}"
     label 'process_medium'
 
-    container 'docker.io/scwatts/teal:563f6e0--0'
+    container 'docker.io/scwatts/teal:1.3.3--0'
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bai), path(normal_bam), path(normal_bai), path(tumor_metrics_dir), path(normal_metrics_dir), path(cobalt_dir), path(purple_dir)
@@ -55,6 +55,9 @@ process TEAL {
     stub:
     """
     mkdir -p teal/
+
+    ${ (meta.tumor_id != null) ? "touch teal/${meta.tumor_id}.teal.{telbam.bam,tellength.tsv,breakend.tsv.gz}" : '' }
+    ${ (meta.normal_id != null) ? "touch teal/${meta.normal_id}.teal.{telbam.bam,tellength.tsv}" : '' }
 
     echo -e '${task.process}:\\n  stub: noversions\\n' > versions.yml
     """
