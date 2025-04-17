@@ -34,7 +34,10 @@ workflow PEACH_CALLING {
             ]
         }
         .branch { meta, purple_dir ->
-            runnable: purple_dir
+
+            def has_normal = Utils.hasNormalDna(meta)
+
+            runnable: purple_dir && has_normal
             skip: true
                 return meta
         }

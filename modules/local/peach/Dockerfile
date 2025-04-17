@@ -12,12 +12,12 @@ channels:\n\
     - defaults'
 
 RUN \
-  conda create -y -p /env/ \
-    'openjdk >=8'
+    conda create -y -p /env/ \
+        'openjdk >=8'
 
 RUN \
-  mkdir -p /opt/peach/ && \
-  wget -O /opt/peach/peach.jar 'https://github.com/hartwigmedical/hmftools/releases/download/peach-v2.0.0/peach_v2.0.0.jar'
+    mkdir -p /opt/peach/ && \
+    wget -O /opt/peach/peach.jar 'https://github.com/hartwigmedical/hmftools/releases/download/peach-v2.0.0/peach_v2.0.0.jar'
 
 RUN \
     conda clean -yaf

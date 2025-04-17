@@ -42,11 +42,11 @@ process PEACH {
     """
     mkdir -p peach/
 
-    touch peach/${meta.tumor_id}.peach.events.tsv
-    touch peach/${meta.tumor_id}.peach.gene.events.tsv
-    touch peach/${meta.tumor_id}.peach.haplotypes.all.tsv
-    touch peach/${meta.tumor_id}.peach.haplotypes.best.tsv
-    touch peach/${meta.tumor_id}.peach.qc.tsv
+    touch peach/${meta.sample_id}.peach.events.tsv
+    touch peach/${meta.sample_id}.peach.gene.events.tsv
+    touch peach/${meta.sample_id}.peach.haplotypes.all.tsv
+    touch peach/${meta.sample_id}.peach.haplotypes.best.tsv
+    touch peach/${meta.sample_id}.peach.qc.tsv
 
     echo -e '${task.process}:\\n  stub: noversions\\n' > versions.yml
     """
