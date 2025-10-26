@@ -251,51 +251,48 @@ used throughout the WiGiTS tools). We plan to address this issue in future relea
 #### REDUX BAM / CRAM
 
 When running an analysis with DNA data from FASTQ, two of the most time consuming and resource intensive pipeline steps
-are [BWA-MEM2](https://github.com/bwa-mem2/bwa-mem2) read alignment and
-[REDUX](https://github.com/hartwigmedical/hmftools/tree/master/redux) alignment processing.
+are read alignment by [BWA-MEM2](https://github.com/bwa-mem2/bwa-mem2) and read post-processing by 
+[REDUX](https://github.com/hartwigmedical/hmftools/tree/master/redux).
 
-`oncoanalyser` can be run starting from REDUX BAMs or CRAMs if they already exist from a prior analysis.
-
-For REDUX BAMs, provide `bam_redux`/`cram_redux` in the `filetype` field, and optionally the BAM/CRAM index to `bai`/`crai` (only required
-if indexes are not in the same directory as the BAM/CRAM):
-
-```csv title="samplesheet.redux_bam_bai.csv"
-group_id,subject_id,sample_id,sample_type,sequence_type,filetype,filepath
-PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,bam_redux,/path/to/PATIENT1-T.dna.redux.bam
-PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,bai,/other/dir/PATIENT1-T.dna.redux.bam.bai
-PATIENT2,PATIENT2,PATIENT2-T,tumor,dna,cram_redux,/path/to/PATIENT2-T.dna.redux.cram
-PATIENT2,PATIENT2,PATIENT2-T,tumor,dna,crai,/other/dir/PATIENT2-T.dna.redux.cram.crai
-```
-
-The `*.jitter_params.tsv` and `*.ms_table.tsv.gz` REDUX output files are expected to be in the same directory as the
-REDUX BAM, and are required to run [SAGE](https://github.com/hartwigmedical/hmftools/tree/master/sage). If these files
-are located elsewhere, their paths can be explicitly provided by specifying `redux_jitter_tsv` and `redux_ms_tsv`in the
-`filetype` field:
-
-```csv title="samplesheet.redux_inputs.csv"
-group_id,subject_id,sample_id,sample_type,sequence_type,filetype,filepath
-PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,bam_redux,/path/to/PATIENT1-T.dna.redux.bam
-PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,redux_jitter_tsv,/other/dir/PATIENT1-T.dna.jitter_params.tsv
-PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,redux_ms_tsv,/path/dir/PATIENT1-T.dna.ms_table.tsv.gz
-```
-
-:::tip
-
-You can also [start from existing inputs](#starting-from-existing-inputs) other than from REDUX BAM
-
-:::
-
-:::warning
-
-When starting from REDUX BAM/CRAM, the filenames must have the format:
-
+`oncoanalyser` can be run starting from existing REDUX output BAMs/CRAMs, as well the associated TSV files (which are
+used during small variant calling by [SAGE](https://github.com/hartwigmedical/hmftools/tree/master/sage)): 
 - `<sample_id>.redux.bam` or `<sample_id>.redux.cram`
 - `<sample_id>.redux.bam.bai` or `<sample_id>.redux.cram.crai`
 - `<sample_id>.jitter_params.tsv`
 - `<sample_id>.ms_table.tsv.gz`
 
-For example, if `sample_id` is `PATIENT1-T`, the BAM filename must be `PATIENT1-T.redux.bam` and not e.g.
-`PATIENT1.redux.bam`
+When running `oncoanalyser` on local file systems (non-cloud storage), only the BAM/CRAM files need to be provided to 
+the samplesheet assuming the REDUX output files are in the same directory. For example:
+
+```csv title="samplesheet.redux_bam_bai.csv"
+group_id,subject_id,sample_id,sample_type,sequence_type,filetype,filepath
+PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,bam_redux,/path/to/PATIENT1-T.dna.redux.bam
+PATIENT2,PATIENT2,PATIENT2-T,tumor,dna,cram_redux,/path/to/PATIENT2-T.dna.redux.cram
+```
+
+However, all REDUX files must be provided explicitly to the sample sheet if running on `oncoanalyser` using 
+cloud storage (i.e. using a [cloud executor](#executors)), or if not all REDUX files are not in the same directory. 
+Below is an example samplesheet with Google Cloud Storage URIs:
+
+```csv title="samplesheet.redux_inputs.csv"
+group_id,subject_id,sample_id,sample_type,sequence_type,filetype,filepath
+PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,bam_redux,gs://bucket/PATIENT1-T.dna.redux.bam
+PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,bai,gs://bucket/PATIENT1-T.dna.redux.bam.bai
+PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,redux_jitter_tsv,gs://bucket/PATIENT1-T.dna.jitter_params.tsv
+PATIENT1,PATIENT1,PATIENT1-T,tumor,dna,redux_ms_tsv,gs://bucket/PATIENT1-T.dna.ms_table.tsv.gz
+```
+
+:::info
+
+Cloud storage does not have real directories. Two files such as `gs://bucket/file1.tsv` and `gs://bucket/file2.tsv`, 
+even if they share same "directory" or more precisely URI prefix, are independent objects and unrelated. This is why 
+all REDUX files must be provided explicitly to the sample sheet.
+
+:::
+
+:::tip
+
+You can also [start from existing inputs](#starting-from-existing-inputs) other than from REDUX BAM
 
 :::
 
