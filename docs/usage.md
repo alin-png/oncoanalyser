@@ -44,7 +44,7 @@ A typical command for running `oncoanalyser` is shown below:
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config \ # Optional but recommended
   -profile docker \
   --mode wgts \
@@ -68,7 +68,7 @@ Below is a brief description of each argument:
 :::tip
 
 If you encounter any issues setting up or running `oncoanalyser`, please see
-[FAQ and troubleshooting](/oncoanalyser/2.2.0/docs/usage/faq_and_troubleshooting)
+[FAQ and troubleshooting](/oncoanalyser/2.3.0/docs/usage/faq_and_troubleshooting)
 
 :::
 
@@ -101,7 +101,7 @@ outdir: 'output/'
 and be run using this command:
 
 ```bash
-nextflow run nf-core/oncoanalyser -revision 2.2.0 -profile docker -params-file params.yaml
+nextflow run nf-core/oncoanalyser -revision 2.3.0 -profile docker -params-file params.yaml
 ```
 
 You can also generate such `yaml`/`json` files via [nf-core/launch](https://nf-co.re/launch).
@@ -118,7 +118,7 @@ nextflow pull nf-core/oncoanalyser
 
 It is a good idea to specify a pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
-First, go to the [nf-core/oncoanalyser releases page](https://github.com/nf-core/oncoanalyser/releases) and find the latest pipeline version - numeric only (e.g. `2.2.0`). Then specify this when running the pipeline with `-revision` (one hyphen) - e.g. `-revision 2.2.0`. Of course, you can switch to another version by changing the number after the `-revision` flag.
+First, go to the [nf-core/oncoanalyser releases page](https://github.com/nf-core/oncoanalyser/releases) and find the latest pipeline version - numeric only (e.g. `2.3.0`). Then specify this when running the pipeline with `-revision` (one hyphen) - e.g. `-revision 2.3.0`. Of course, you can switch to another version by changing the number after the `-revision` flag.
 
 This version number will be logged in reports when you run the pipeline, so that you'll know what you used when you look back in the future. For example, in the `<outdir>/pipeline_info/software_versions.yml` file.
 
@@ -142,7 +142,7 @@ row as the first line with the below columns:
 | `sample_id`     | Sample identifier                                                                                                                                                   |
 | `sample_type`   | Sample type: `tumor`, `normal`                                                                                                                                      |
 | `sequence_type` | Sequence type: `dna`, `rna`                                                                                                                                         |
-| `filetype`      | File type: e.g. `fastq`, `bam`, `bai`; a full list of valid values can be found [here](https://github.com/nf-core/oncoanalyser/blob/2.2.0/lib/Constants.groovy#L80) |
+| `filetype`      | File type: e.g. `fastq`, `bam`, `bai`; a full list of valid values can be found [here](https://github.com/nf-core/oncoanalyser/blob/2.3.0/lib/Constants.groovy#L80) |
 | `info`          | Additional sample information such as sequencing library and lane for [FASTQ](#fastq) files, this column is only required when running an analysis from FASTQ       |
 | `filepath`      | Absolute filepath to input file, which can be a local filepath or supported protocol (http, https, ftp, s3, az, gz)                                                 |
 
@@ -384,7 +384,7 @@ analysis from BAM.
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -profile docker \
   --mode prepare_reference \
   --ref_data_types wgs \
@@ -392,7 +392,7 @@ nextflow run nf-core/oncoanalyser \
   --outdir output/
 ```
 
-Once the above commands complete, the stated reference data can be found in `<outdir>/reference_data/2.2.0`. You will
+Once the above commands complete, the stated reference data can be found in `<outdir>/reference_data/2.3.0`. You will
 then need to provide a config file that points to these reference files (see [Configuring reference data](#configuring-reference-data))
 which can be used for subsequent `oncoanalyser` runs. The Nextflow work directory can also be removed to free up disk
 space.
@@ -446,7 +446,7 @@ The configuration file can then be supplied to `oncoanalyser` via the `-config <
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config  \
   <...>
 ```
@@ -483,7 +483,7 @@ Each index can then be created in by using `--mode prepare_reference` and `--ref
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config genome.custom.config \
   -profile docker \
   --mode prepare_reference \
@@ -551,7 +551,7 @@ _GRCh38 genome (Hartwig): `GRCh38_hmf`_
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config \
   -profile docker \
   --mode wgts \
@@ -567,7 +567,7 @@ nextflow run nf-core/oncoanalyser \
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config \
   -profile docker \
   --mode targeted \
@@ -624,7 +624,7 @@ to arguments `--driver_gene_panel`, `--target_regions_bed`, and `--isofox_gene_i
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config \
   -profile docker \
   --mode panel_resource_creation \
@@ -677,7 +677,7 @@ Lastly, run `oncoanalyser` with `--mode targeted` to analyse your panel sequenci
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config \
   -config panel_data.config \
   -profile docker \
@@ -717,7 +717,7 @@ was sequenced):
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -config reference_data.config \
   -profile docker \
   --mode purity_estimate \
@@ -742,7 +742,7 @@ Please see: [Staging reference data: Automatic staging](#automatic-staging)
 ## Process selection
 
 It is possible to exclude or manually select specific processes when running `oncoanalyser`. The full list of processes that can
-be selected is available [here](https://github.com/nf-core/oncoanalyser/blob/2.2.0/lib/Constants.groovy#L53).
+be selected is available [here](https://github.com/nf-core/oncoanalyser/blob/2.3.0/lib/Constants.groovy#L53).
 
 :::warning
 
@@ -759,7 +759,7 @@ skip resource intensive processes like Virusbreakend, or ORANGE because you do n
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -profile docker \
   --mode wgts \
   --processes_exclude virusinterpreter,orange \
@@ -775,7 +775,7 @@ you may only want to run alignment and SNV/indel, SV and CNV calling from DNA FA
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -profile docker \
   --mode wgts \
   --processes_manual alignment,redux,sage,amber,cobalt,esvee,sage,pave,purple \
@@ -815,7 +815,7 @@ Then, run `oncoanalyser` skipping all processes except for `neo`:
 
 ```bash
 nextflow run nf-core/oncoanalyser \
-  -revision 2.2.0 \
+  -revision 2.3.0 \
   -profile docker \
   --mode wgts \
   --processes_manual neo \
