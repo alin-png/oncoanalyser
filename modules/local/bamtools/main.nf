@@ -16,9 +16,11 @@ process BAMTOOLS {
     path target_region_bed
 
     output:
-    tuple val(meta), path("${meta.id}_bamtools/"), emit: metrics_dir
-    path 'versions.yml'                          , emit: versions
-    path '.command.*'                            , emit: command_files
+    // NOTE(LN): We add the "bamtools_" prefix to prevent potential collision
+    // with other tools that may want to use sample_id as the output dir name
+    tuple val(meta), path("bamtools_${meta.sample_id}/"), emit: metrics_dir
+    path 'versions.yml'                                 , emit: versions
+    path '.command.*'                                   , emit: command_files
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +35,7 @@ process BAMTOOLS {
     def target_region_bed_arg = target_region_bed ? "-regions_file ${target_region_bed}" : ''
 
     """
-    mkdir -p ${meta.id}_bamtools/
+    mkdir -p bamtools_${meta.sample_id}/
 
     bamtools \\
         -Xmx${Math.round(task.memory.bytes * xmx_mod)} \\
@@ -48,7 +50,7 @@ process BAMTOOLS {
         ${target_region_bed_arg} \\
         ${log_level_arg} \\
         -threads ${task.cpus} \\
-        -output_dir ${meta.id}_bamtools/
+        -output_dir bamtools_${meta.sample_id}/
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -58,13 +60,13 @@ process BAMTOOLS {
 
     stub:
     """
-    mkdir -p ${meta.id}_bamtools/
+    mkdir -p bamtools_${meta.sample_id}/
 
-    touch ${meta.id}_bamtools/${meta.sample_id}.bam_metric.summary.tsv;
-    touch ${meta.id}_bamtools/${meta.sample_id}.bam_metric.coverage.tsv;
-    touch ${meta.id}_bamtools/${meta.sample_id}.bam_metric.frag_length.tsv;
-    touch ${meta.id}_bamtools/${meta.sample_id}.bam_metric.flag_counts.tsv;
-    touch ${meta.id}_bamtools/${meta.sample_id}.bam_metric.partition_stats.tsv;
+    touch bamtools_${meta.sample_id}/${meta.sample_id}.bam_metric.summary.tsv;
+    touch bamtools_${meta.sample_id}/${meta.sample_id}.bam_metric.coverage.tsv;
+    touch bamtools_${meta.sample_id}/${meta.sample_id}.bam_metric.frag_length.tsv;
+    touch bamtools_${meta.sample_id}/${meta.sample_id}.bam_metric.flag_counts.tsv;
+    touch bamtools_${meta.sample_id}/${meta.sample_id}.bam_metric.partition_stats.tsv;
 
     echo -e '${task.process}:\\n  stub: noversions\\n' > versions.yml
     """
